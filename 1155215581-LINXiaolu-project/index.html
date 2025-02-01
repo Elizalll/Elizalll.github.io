@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Website</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <header>
+            <div class="logo">My Shopping Website</div>
+            <nav>
+                <ul>
+                    <li><a href="#" @click="selectCategory(0)">Home</a></li>
+                    <li><a href="#" @click="selectCategory(1)">Food</a></li>
+                    <li><a href="#" @click="selectCategory(2)">Beverage</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <button class="cart-button" @click="toggleCart">
+                    Shopping Cart
+                </button>
+                <div class="cart-tooltip" v-if="showCart">
+                    <div v-if="!isCartEmpty">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(quantity, pid) in cartItems" :key="pid">
+                                    <td>{{ getProductById(pid).pname }}</td>
+                                    <td>
+                                        <input type="number" v-model.number="cartItems[pid]" :min="1" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table><button class="checkout-button" @click="checkout">Checkout</button>
+                    </div>
+                    <p v-if="isCartEmpty">Empty</p>
+                </div>
+                <a href="login.html">Login</a>
+            </div>
+        </header>
+
+        <main>
+            <nav>
+                <ul>
+                    <li><a href="#" @click="selectCategory(0)">Home</a></li>
+                    <li v-if="currentCategory != 0"><a href="#"
+                            @click="selectCategory(currentCategory)">> {{product_intro[currentCategory]}}</a></li>
+                    <li v-if="showDetail"><a href="#" @click="showProductDetail(currentProductDetail)">> {{
+                            currentProductDetail.pname }}</a></li>
+
+                </ul>
+            </nav>
+
+            <div id="product-detail" v-if="showDetail" class="product-detail">
+                <div class="product-image">
+                    <img :src="currentProductDetail.image" alt="Product Image">
+                </div>
+                <div class="product-info">
+                    <h2>{{ currentProductDetail.pname }}</h2>
+                    <p>Weight: 500g</p>
+                    <p>Description: Very healthy! Try this good {{ currentProductDetail.pname }}!!</h3>
+                    <p class="price">Price: <span>{{ currentProductDetail.price }}</span></p>
+                    <div class="quantity-selector">
+                        <input type="number" v-model.number="selectedQuantity" min="1" />
+                    </div>
+                    <button class="add-to-cart" @click="addToCart(currentProductDetail)">Add to Cart</button>
+                    <!-- <button @click="closeDetail()">Back</button> -->
+                </div>
+            </div>
+            <div v-else="showDetail">
+                <h2>{{ product_intro[currentCategory] }}</h2>
+                <div class="products">
+                    <template v-if="currentCategory === 0">
+                        <div class="product" v-for="pd in cat_products_list[0]" :key="pd.pid">
+                            <img @click="showProductDetail(pd)" :src="pd.image" alt="Special">
+                            <h3 @click="showProductDetail(pd)">{{ pd.pname }}</h3>
+                            <p>${{ pd.price }}</p>
+                            <button @click="addToCart(pd)">Add to Cart</button>
+                        </div>
+                    </template>
+                    <template v-if="currentCategory === 1">
+                        <div class="product" v-for="pd in cat_products_list[1]" :key="pd.pid">
+                            <img @click="showProductDetail(pd)" :src="pd.image" alt="Food">
+                            <h3 @click="showProductDetail(pd)">{{ pd.pname }}</h3>
+                            <p>${{ pd.price }}</p>
+                            <button @click="addToCart(pd)">Add to Cart</button>
+                        </div>
+                    </template>
+                    <template v-if="currentCategory === 2">
+                        <div class="product" v-for="pd in cat_products_list[2]" :key="pd.pid">
+                            <img @click="showProductDetail(pd)" :src="pd.image" alt="Beverage">
+                            <h3 @click="showProductDetail(pd)">{{ pd.pname }}</h3>
+                            <p>${{ pd.price }}</p>
+                            <button @click="addToCart(pd)">Add to Cart</button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2024 1155215581 </p>
+        </footer>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
