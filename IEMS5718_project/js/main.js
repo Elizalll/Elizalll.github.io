@@ -40,7 +40,6 @@ const app = createApp({
     },
     methods: {
         selectCategory(category) {
-            alert("select",category,"now",this.currentCategory)
             this.currentCategory = category;
             if(this.showDetail){
                 this.closeDetail();
